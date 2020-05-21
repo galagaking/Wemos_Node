@@ -11,7 +11,7 @@
         "type": "function",
         "z": "f6f780f.35cf68",
         "name": "Convert to GPS-json",
-        "func": "var msg1 = {};\n\nif (msg.payload.hasOwnProperty(\"result\")) {\n// processed with Lora Cloud\n    msg1.payload = msg.payload;\n    msg1.payload.date = Date().toString();\n    msg1.payload.lon = msg.payload.result.locationEst.longitude;\n    msg1.payload.lat = msg.payload.result.locationEst.latitude;\n    msg1.payload.radius = msg.payload.result.locationEst.toleranceHoriz;\n    if (msg1.payload.radius > 1000) {\n        msg1.payload.radius = 1000\n    }       \n    delete msg1.payload.result;\n    delete msg1.payload.warnings;\n}\nif (msg.payload.location) {\n// processed with Google or Here\n    msg1.payload = msg.payload;\n    msg1.payload.date = Date().toString();\n    msg1.payload.lon = msg.payload.location.lng;\n    msg1.payload.lat = msg.payload.location.lat;\n\n    // processed with Google\n    if (msg.payload.accuracy) {\n        msg1.payload.radius = msg.payload.accuracy;\n        delete msg1.payload.accuracy;\n    }\n    \n    // processed with HERE\n    if (msg.payload.location.accuracy) {\n        msg1.payload.radius = msg.payload.location.accuracy;\n    }\n    delete msg1.payload.location;\n}\n    msg1.payload.layer = \"Current Location\";\n    msg1.payload.name = \"My Wemos Node\";\n    msg1.payload.icon=\"user\";\n    msg1.payload.iconColor=\"blue\";\nreturn msg1;",
+        "func": "var msg1 = {};\nif (!msg.payload.hasOwnProperty(\"error\")) {\nif (msg.payload.hasOwnProperty(\"result\")) {\n// processed with Lora Cloud\n    msg1.payload = msg.payload;\n    msg1.payload.date = Date().toString();\n    msg1.payload.lon = msg.payload.result.locationEst.longitude;\n    msg1.payload.lat = msg.payload.result.locationEst.latitude;\n    msg1.payload.radius = msg.payload.result.locationEst.toleranceHoriz;\n    if (msg1.payload.radius > 1000) {\n        msg1.payload.radius = 1000\n    }       \n    delete msg1.payload.result;\n    delete msg1.payload.warnings;\n}\nif (msg.payload.location) {\n// processed with Google or Here\n    msg1.payload = msg.payload;\n    msg1.payload.date = Date().toString();\n    msg1.payload.lon = msg.payload.location.lng;\n    msg1.payload.lat = msg.payload.location.lat;\n\n    // processed with Google\n    if (msg.payload.accuracy) {\n        msg1.payload.radius = msg.payload.accuracy;\n        delete msg1.payload.accuracy;\n    }\n    \n    // processed with HERE\n    if (msg.payload.location.accuracy) {\n        msg1.payload.radius = msg.payload.location.accuracy;\n    }\n    delete msg1.payload.location;\n}\n    msg1.payload.layer = \"Current Location\";\n    msg1.payload.name = \"My Wemos Node\";\n    msg1.payload.icon=\"user\";\n    msg1.payload.iconColor=\"blue\";\n}\nreturn msg1;",
         "outputs": 1,
         "noerr": 0,
         "x": 160,
@@ -26,6 +26,7 @@
         ],
         "info": "This node will convert location input to coordinates for the worldmap node. LoRaCloud has a different format, so this will be converted. Every service gets it's own icon and colour."
     },
+       
     {
         "id": "7452809.82f5d8",
         "type": "function",
